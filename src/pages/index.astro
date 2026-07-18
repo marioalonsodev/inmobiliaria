@@ -11,6 +11,12 @@ const propiedades = await getCollection('propiedades');
     <meta charset="utf-8" />
     <title>Inmobiliaria Demo</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  // Si alguien entra con un link de invitación, lo mandamos directo al panel admin
+  if (window.location.hash.includes("_token=")) {
+    window.location.replace("/admin/" + window.location.hash);
+  }
+</script>
   </head>
   <body style="font-family: Arial, sans-serif; padding: 20px;">
     
