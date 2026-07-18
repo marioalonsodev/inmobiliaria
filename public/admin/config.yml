@@ -1,0 +1,44 @@
+backend:
+  name: git-gateway
+
+# Esta línea es CLAVE hoy: nos permite probar el CMS en nuestra computadora sin conectarlo a internet todavía
+# local_backend: true
+
+# Configuración Cloudinary
+media_library:
+  name: cloudinary
+  config:
+    cloud_name: "dzdbtomvg"
+    api_key: "388392817258818"
+
+collections:
+  - name: "propiedades"
+    label: "Propiedades"
+    folder: "src/content/propiedades" # Aquí le decimos dónde guardar los archivos
+    create: true # Permite crear nuevas propiedades
+    slug: "{{slug}}" # El nombre del archivo se generará automáticamente usando el título
+    fields:
+      # Campos obligatorios
+      - {label: "Título", name: "titulo", widget: "string"}
+      - {label: "Imagen Destacada", name: "imagen_destacada", widget: "image"}
+      - {label: "Dirección", name: "direccion", widget: "string"}
+      
+      # Selectores
+      - {label: "Moneda", name: "moneda", widget: "select", options: ["USD", "ARS"], default: "USD"}
+      - {label: "Precio", name: "precio", widget: "number", value_type: "float"}
+      - {label: "Operación", name: "operacion", widget: "select", options: ["Venta", "Alquiler"]}
+      - {label: "Tipo de Propiedad", name: "tipo_propiedad", widget: "select", options: ["Casa", "Departamento", "Duplex", "PH", "Local comercial", "Cochera", "Terreno", "Galpón", "Campo"]}
+      
+      # Campos numéricos opcionales (tienen required: false)
+      - {label: "Dormitorios", name: "dormitorios", widget: "number", value_type: "int", required: false}
+      - {label: "Baños", name: "banos", widget: "number", value_type: "int", required: false}
+      - {label: "Ambientes", name: "ambientes", widget: "number", value_type: "int", required: false}
+      - {label: "Cocheras", name: "cocheras", widget: "number", value_type: "int", required: false}
+      - {label: "Superficie cubierta (m2)", name: "sup_cubierta", widget: "number", value_type: "int", required: false}
+      - {label: "Superficie total (m2)", name: "sup_total", widget: "number", value_type: "int", required: false}
+      
+      # Campo para la galería (Opcional)
+      - {label: "Galería de imágenes", name: "galeria", widget: "list", field: {label: "Imagen", name: "imagen", widget: "image"}, required: false}
+      
+      # El texto largo
+      - {label: "Descripción de la propiedad", name: "body", widget: "markdown"}

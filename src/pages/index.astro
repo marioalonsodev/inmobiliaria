@@ -1,17 +1,45 @@
 ---
+// 1. Importamos la herramienta de Astro para leer colecciones
+import { getCollection } from 'astro:content';
 
+// 2. Le decimos: "Astro, trae todas las propiedades y guárdalas en esta variable"
+const propiedades = await getCollection('propiedades');
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Inmobiliaria Demo</title>
+  </head>
+  <body style="font-family: Arial, sans-serif; padding: 20px;">
+    
+    <h1>Propiedades Destacadas</h1>
+
+    <!-- 3. Recorremos todas las propiedades que encontró Astro -->
+    {propiedades.map((propiedad) => (
+      
+      <article style="border: 1px solid #ccc; padding: 20px; border-radius: 8px; max-width: 600px;">
+        
+        <h2>{propiedad.data.titulo}</h2>
+        <h3 style="color: green;">{propiedad.data.moneda} {propiedad.data.precio}</h3>
+        
+        <p><strong>Ubicación:</strong> {propiedad.data.direccion}</p>
+        <p><strong>Tipo:</strong> {propiedad.data.tipo_propiedad} en {propiedad.data.operacion}</p>
+        
+        <!-- ESTA ES LA MAGIA DEL RENDERIZADO CONDICIONAL -->
+        <!-- Solo se crea esta línea de código HTML si el cliente cargó los datos -->
+        <div style="background: #f4f4f4; padding: 10px; margin-bottom: 15px;">
+          {propiedad.data.dormitorios && <span>🛏️ Dormitorios: {propiedad.data.dormitorios} | </span>}
+          {propiedad.data.banos && <span>🛁 Baños: {propiedad.data.banos} | </span>}
+          {propiedad.data.sup_total && <span>📐 Sup. Total: {propiedad.data.sup_total} m²</span>}
+        </div>
+
+        <!-- Y aquí mostramos la descripción larga (el cuerpo del Markdown) -->
+        <p>{propiedad.body}</p>
+        
+      </article>
+
+    ))}
+
+  </body>
 </html>
