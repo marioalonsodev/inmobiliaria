@@ -3,7 +3,7 @@
 const { propiedad } = Astro.props;
 ---
 
-<a href={`/propiedades/${propiedad.id}`} class="block bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+<a href={`/propiedades/${propiedad.id}`} data-operacion={propiedad.data.operacion} data-tipo={propiedad.data.tipo_propiedad} class="tarjeta-propiedad block bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
   
   <!-- Imagen y Etiquetas Flotantes -->
   <div class="relative h-64 overflow-hidden bg-gray-200">

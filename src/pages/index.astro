@@ -1,36 +1,110 @@
 ---
-// 1. Importaciones
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 
-// 2. Traemos las propiedades de la base de datos
 const propiedades = await getCollection('propiedades');
 ---
 
-<!-- 3. Envolvemos la página en nuestro Molde Maestro -->
 <Layout title="Inicio">
   
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    
-    <!-- Título y Subtítulo principal (Hero) -->
-    <h1 class="text-5xl font-bold text-center text-gray-900 mb-4 tracking-tight">
-      Descubre tu lugar ideal
-    </h1>
-    <p class="text-xl text-center text-gray-500 mb-12">
-      Tenemos cientos de propiedades exclusivas esperando por ti.
-    </p>
+  <!-- HERO (Portada) -->
+  <div class="relative bg-white pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto text-center">
+      <h1 class="text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+        Descubre tu lugar ideal
+      </h1>
+      <p class="text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
+        Tenemos cientos de propiedades exclusivas esperando por ti. Encuentra la tuya en segundos.
+      </p>
 
-    <!-- Contenedor Cuadrícula (1 columna en celular, 2 en tablet, 3 en PC) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-      
-      <!-- Magia de Astro: Recorremos las propiedades y dibujamos una Card por cada una -->
+      <!-- LA BARRA DEL BUSCADOR FLOTANTE -->
+      <div class="max-w-3xl mx-auto bg-white border border-gray-200 rounded-full shadow-lg p-2 sm:p-3 flex flex-col sm:flex-row gap-2 relative z-10">
+        
+        <!-- Selector de Operación -->
+        <select id="filtro-operacion" class="flex-1 bg-transparent text-gray-700 font-medium px-4 py-2 outline-none cursor-pointer appearance-none text-center sm:text-left">
+          <option value="todos">Operación (Todas)</option>
+          <option value="Venta">Comprar (Venta)</option>
+          <option value="Alquiler">Alquilar</option>
+        </select>
+
+        <div class="hidden sm:block w-px bg-gray-200 my-2"></div> <!-- Linea divisoria -->
+
+        <!-- Selector de Tipo -->
+        <select id="filtro-tipo" class="flex-1 bg-transparent text-gray-700 font-medium px-4 py-2 outline-none cursor-pointer appearance-none text-center sm:text-left">
+          <option value="todos">Tipo de Propiedad (Todos)</option>
+          <option value="Casa">Casa</option>
+          <option value="Departamento">Departamento</option>
+          <option value="Duplex">Duplex</option>
+          <option value="PH">PH</option>
+          <option value="Terreno">Terreno</option>
+          <option value="Local comercial">Local comercial</option>
+        </select>
+
+        <!-- Botón Buscar -->
+        <button id="btn-buscar" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors w-full sm:w-auto shadow-md">
+          Buscar
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN DE RESULTADOS -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {propiedades.map((propiedad) => (
         <Card propiedad={propiedad} />
       ))}
-
     </div>
     
+    <!-- Mensaje si no hay resultados (oculto por defecto) -->
+    <div id="mensaje-vacio" class="hidden text-center py-20">
+      <h3 class="text-2xl font-bold text-gray-400">No encontramos propiedades con esos filtros</h3>
+      <p class="text-gray-500 mt-2">Intenta cambiando el tipo de búsqueda.</p>
+    </div>
   </div>
+
+  <!-- LA MAGIA DEL BUSCADOR (JavaScript) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnBuscar = document.getElementById('btn-buscar');
+      const filtroOperacion = document.getElementById('filtro-operacion');
+      const filtroTipo = document.getElementById('filtro-tipo');
+      const tarjetas = document.querySelectorAll('.tarjeta-propiedad');
+      const mensajeVacio = document.getElementById('mensaje-vacio');
+
+      btnBuscar.addEventListener('click', () => {
+        const operacion = filtroOperacion.value;
+        const tipo = filtroTipo.value;
+        let mostradas = 0;
+
+        tarjetas.forEach(tarjeta => {
+          // Leemos las etiquetas invisibles que pusimos en la tarjeta
+          const propOperacion = tarjeta.getAttribute('data-operacion');
+          const propTipo = tarjeta.getAttribute('data-tipo');
+
+          // Comprobamos si coincide con lo que el usuario busca
+          const coincideOperacion = operacion === 'todos' || operacion === propOperacion;
+          const coincideTipo = tipo === 'todos' || tipo === propTipo;
+
+          // Si coincide, la mostramos, sino, la ocultamos
+          if (coincideOperacion && coincideTipo) {
+            tarjeta.style.display = 'block';
+            mostradas++;
+          } else {
+            tarjeta.style.display = 'none';
+          }
+        });
+
+        // Mostramos el mensaje de error si no hay coincidencias
+        if (mostradas === 0) {
+          mensajeVacio.classList.remove('hidden');
+        } else {
+          mensajeVacio.classList.add('hidden');
+        }
+      });
+    });
+  </script>
 
 </Layout>
