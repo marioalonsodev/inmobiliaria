@@ -8,29 +8,32 @@ const propiedades = await getCollection('propiedades');
 
 <Layout title="Inicio">
   
-  <!-- HERO (Portada) -->
-  <div class="relative bg-white pt-16 pb-20 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto text-center">
-      <h1 class="text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+  <!-- HERO CON IMAGEN DE FONDO -->
+  <!-- Cambia la URL de background-image por una foto de tus propiedades en el futuro -->
+  <div class="relative bg-cover bg-center pt-32 pb-36 px-4 sm:px-6 lg:px-8" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');">
+    
+    <!-- Filtro oscuro sobre la foto para que el texto se lea -->
+    <div class="absolute inset-0 bg-gray-900/60"></div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto text-center">
+      <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight drop-shadow-md">
         Descubre tu lugar ideal
       </h1>
-      <p class="text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
+      <p class="text-xl text-gray-200 mb-12 max-w-2xl mx-auto drop-shadow">
         Tenemos cientos de propiedades exclusivas esperando por ti. Encuentra la tuya en segundos.
       </p>
 
-      <!-- LA BARRA DEL BUSCADOR FLOTANTE -->
-      <div class="max-w-3xl mx-auto bg-white border border-gray-200 rounded-full shadow-lg p-2 sm:p-3 flex flex-col sm:flex-row gap-2 relative z-10">
+      <!-- BUSCADOR -->
+      <div class="max-w-3xl mx-auto bg-white border border-gray-100 rounded-full shadow-2xl p-2 sm:p-3 flex flex-col sm:flex-row gap-2">
         
-        <!-- Selector de Operación -->
         <select id="filtro-operacion" class="flex-1 bg-transparent text-gray-700 font-medium px-4 py-2 outline-none cursor-pointer appearance-none text-center sm:text-left">
           <option value="todos">Operación (Todas)</option>
           <option value="Venta">Comprar (Venta)</option>
           <option value="Alquiler">Alquilar</option>
         </select>
 
-        <div class="hidden sm:block w-px bg-gray-200 my-2"></div> <!-- Linea divisoria -->
+        <div class="hidden sm:block w-px bg-gray-200 my-2"></div>
 
-        <!-- Selector de Tipo -->
         <select id="filtro-tipo" class="flex-1 bg-transparent text-gray-700 font-medium px-4 py-2 outline-none cursor-pointer appearance-none text-center sm:text-left">
           <option value="todos">Tipo de Propiedad (Todos)</option>
           <option value="Casa">Casa</option>
@@ -41,31 +44,28 @@ const propiedades = await getCollection('propiedades');
           <option value="Local comercial">Local comercial</option>
         </select>
 
-        <!-- Botón Buscar -->
         <button id="btn-buscar" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors w-full sm:w-auto shadow-md">
           Buscar
         </button>
-
       </div>
     </div>
   </div>
 
-  <!-- SECCIÓN DE RESULTADOS -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <!-- RESULTADOS -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="contenedor-tarjetas">
       {propiedades.map((propiedad) => (
         <Card propiedad={propiedad} />
       ))}
     </div>
     
-    <!-- Mensaje si no hay resultados (oculto por defecto) -->
     <div id="mensaje-vacio" class="hidden text-center py-20">
       <h3 class="text-2xl font-bold text-gray-400">No encontramos propiedades con esos filtros</h3>
       <p class="text-gray-500 mt-2">Intenta cambiando el tipo de búsqueda.</p>
     </div>
   </div>
 
-  <!-- LA MAGIA DEL BUSCADOR (JavaScript) -->
+  <!-- SCRIPT DEL BUSCADOR Y LECTURA DE MENÚ -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const btnBuscar = document.getElementById('btn-buscar');
@@ -74,21 +74,19 @@ const propiedades = await getCollection('propiedades');
       const tarjetas = document.querySelectorAll('.tarjeta-propiedad');
       const mensajeVacio = document.getElementById('mensaje-vacio');
 
-      btnBuscar.addEventListener('click', () => {
+      // Función que filtra las propiedades
+      function ejecutarFiltro() {
         const operacion = filtroOperacion.value;
         const tipo = filtroTipo.value;
         let mostradas = 0;
 
         tarjetas.forEach(tarjeta => {
-          // Leemos las etiquetas invisibles que pusimos en la tarjeta
           const propOperacion = tarjeta.getAttribute('data-operacion');
           const propTipo = tarjeta.getAttribute('data-tipo');
-
-          // Comprobamos si coincide con lo que el usuario busca
+          
           const coincideOperacion = operacion === 'todos' || operacion === propOperacion;
           const coincideTipo = tipo === 'todos' || tipo === propTipo;
 
-          // Si coincide, la mostramos, sino, la ocultamos
           if (coincideOperacion && coincideTipo) {
             tarjeta.style.display = 'block';
             mostradas++;
@@ -97,13 +95,23 @@ const propiedades = await getCollection('propiedades');
           }
         });
 
-        // Mostramos el mensaje de error si no hay coincidencias
         if (mostradas === 0) {
           mensajeVacio.classList.remove('hidden');
         } else {
           mensajeVacio.classList.add('hidden');
         }
-      });
+      }
+
+      // Al hacer clic en el botón, filtramos
+      btnBuscar.addEventListener('click', ejecutarFiltro);
+
+      // Truco para el menú: Leemos la URL si venimos de hacer clic en "Venta" o "Alquiler"
+      const urlParams = new URLSearchParams(window.location.search);
+      const operacionMenu = urlParams.get('operacion');
+      if (operacionMenu) {
+        filtroOperacion.value = operacionMenu;
+        ejecutarFiltro(); // Filtramos automáticamente apenas carga la página
+      }
     });
   </script>
 
