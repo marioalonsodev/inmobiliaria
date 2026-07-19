@@ -6,6 +6,11 @@ moneda: USD
 precio: 90000
 operacion: Venta
 tipo_propiedad: Terreno
+dormitorios: 0
+banos: 0
+ambientes: 0
+cocheras: 0
+sup_cubierta: -2
 sup_total: 332
 galeria:
   - https://res.cloudinary.com/dzdbtomvg/image/upload/v1784484202/terreno_005_kb4wac.webp
