@@ -1,0 +1,56 @@
+---
+// Aquí podemos recibir variables, como el título de la página
+const { title } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Inmobiliaria Demo</title>
+    
+    <!-- Tipografía Outfit de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Script de Netlify Identity (Para que el login funcione siempre) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      if (window.location.hash.includes("_token=")) {
+        window.location.replace("/admin/" + window.location.hash);
+      }
+    </script>
+  </head>
+
+  <!-- font-sans aplica la tipografía Outfit. bg-gray-50 es un gris blanquecino premium -->
+  <body class="font-sans bg-gray-50 text-gray-900 antialiased">
+    
+    <!-- BARRA DE NAVEGACIÓN (Navbar) -->
+    <nav class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20 items-center">
+          
+          <!-- Logo de la inmobiliaria -->
+          <div class="flex-shrink-0 flex items-center">
+            <span class="font-bold text-2xl tracking-tight">Estate<span class="text-blue-600">Horizon</span></span>
+          </div>
+          
+          <!-- Menú de links (Minimalista) -->
+          <div class="hidden md:flex space-x-8">
+            <a href="/" class="text-gray-500 hover:text-gray-900 font-medium transition-colors">Inicio</a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 font-medium transition-colors">Propiedades</a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 font-medium transition-colors">Contacto</a>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <!-- EL CONTENIDO CAMBIANTE VA AQUÍ -->
+    <main>
+      <slot /> <!-- Esta es la etiqueta mágica de Astro. Aquí inyectará la página de inicio o cualquier otra. -->
+    </main>
+
+  </body>
+</html>

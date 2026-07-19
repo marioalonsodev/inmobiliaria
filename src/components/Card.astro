@@ -1,0 +1,77 @@
+---
+// Recibimos los datos de la propiedad que Astro nos mande
+const { propiedad } = Astro.props;
+---
+
+<a href={`/propiedades/${propiedad.id}`} class="block bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+  
+  <!-- Imagen y Etiquetas Flotantes -->
+  <div class="relative h-64 overflow-hidden bg-gray-200">
+    <!-- La imagen hace un ligero zoom al pasar el mouse (group-hover:scale-105) -->
+    <img 
+      src={propiedad.data.imagen_destacada} 
+      alt={propiedad.data.titulo} 
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+    
+    <!-- Etiqueta superior izquierda: Tipo de Propiedad -->
+    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm uppercase tracking-wide">
+      {propiedad.data.tipo_propiedad}
+    </div>
+
+    <!-- Etiqueta inferior izquierda: Venta o Alquiler (Color Azul) -->
+    <div class="absolute bottom-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-md uppercase tracking-wide">
+      {propiedad.data.operacion}
+    </div>
+  </div>
+
+  <!-- Contenido de la Tarjeta -->
+  <div class="p-6">
+    <!-- Título (Si es muy largo, se corta con puntitos gracias a 'truncate') -->
+    <h3 class="text-xl font-bold text-gray-900 mb-1 truncate">{propiedad.data.titulo}</h3>
+    
+    <!-- Dirección con ícono de pin de mapa -->
+    <p class="text-gray-500 text-sm mb-4 truncate flex items-center">
+      <svg class="w-4 h-4 mr-1 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      {propiedad.data.direccion}
+    </p>
+
+    <!-- Características (Renderizado condicional como lo planeamos) -->
+    <div class="flex items-center gap-4 mb-6 text-sm text-gray-600 border-b border-gray-100 pb-6">
+      
+      {propiedad.data.dormitorios && (
+        <div class="flex items-center gap-1.5">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+          <span>{propiedad.data.dormitorios} <span class="hidden sm:inline">Dorm.</span></span>
+        </div>
+      )}
+      
+      {propiedad.data.banos && (
+        <div class="flex items-center gap-1.5">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+          <span>{propiedad.data.banos} <span class="hidden sm:inline">Baños</span></span>
+        </div>
+      )}
+      
+      {propiedad.data.sup_total && (
+        <div class="flex items-center gap-1.5">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+          <span>{propiedad.data.sup_total} m²</span>
+        </div>
+      )}
+      
+    </div>
+
+    <!-- Precio y Flechita -->
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Precio</p>
+        <p class="text-2xl font-bold text-gray-900">{propiedad.data.moneda} {propiedad.data.precio.toLocaleString()}</p>
+      </div>
+      <!-- Botón con flecha que se pone azul al pasar el mouse -->
+      <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+      </div>
+    </div>
+  </div>
+</a>
