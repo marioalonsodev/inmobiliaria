@@ -23,10 +23,10 @@ const propiedades = await getCollection('propiedades');
         Tenemos cientos de propiedades exclusivas esperando por ti. Encuentra la tuya en segundos.
       </p>
 
-      <!-- BUSCADOR -->
-      <div class="max-w-3xl mx-auto bg-white border border-gray-100 rounded-full shadow-2xl p-2 sm:p-3 flex flex-col sm:flex-row gap-2">
+      <!-- BUSCADOR ARREGLADO -->
+      <div class="max-w-3xl mx-auto bg-white border border-gray-100 rounded-3xl sm:rounded-full shadow-2xl p-4 sm:p-3 flex flex-col sm:flex-row gap-4 sm:gap-2">
         
-        <select id="filtro-operacion" class="flex-1 bg-transparent text-gray-700 font-medium px-4 py-2 outline-none cursor-pointer appearance-none text-center sm:text-left">
+        <select id="filtro-operacion" class="flex-1 bg-transparent text-gray-700 font-medium px-4 py-2 sm:py-0 outline-none cursor-pointer appearance-none text-center sm:text-left border-b sm:border-b-0 border-gray-100">
           <option value="todos">Operación (Todas)</option>
           <option value="Venta">Comprar (Venta)</option>
           <option value="Alquiler">Alquilar</option>
@@ -34,7 +34,7 @@ const propiedades = await getCollection('propiedades');
 
         <div class="hidden sm:block w-px bg-gray-200 my-2"></div>
 
-        <select id="filtro-tipo" class="flex-1 bg-transparent text-gray-700 font-medium px-4 py-2 outline-none cursor-pointer appearance-none text-center sm:text-left">
+        <select id="filtro-tipo" class="flex-1 bg-transparent text-gray-700 font-medium px-4 py-2 sm:py-0 outline-none cursor-pointer appearance-none text-center sm:text-left border-b sm:border-b-0 border-gray-100">
           <option value="todos">Tipo de Propiedad (Todos)</option>
           <option value="Casa">Casa</option>
           <option value="Departamento">Departamento</option>
@@ -44,7 +44,7 @@ const propiedades = await getCollection('propiedades');
           <option value="Local comercial">Local comercial</option>
         </select>
 
-        <button id="btn-buscar" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors w-full sm:w-auto shadow-md">
+        <button id="btn-buscar" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 sm:py-3 px-8 rounded-xl sm:rounded-full transition-colors w-full sm:w-auto shadow-md mt-2 sm:mt-0">
           Buscar
         </button>
       </div>
