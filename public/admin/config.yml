@@ -15,11 +15,11 @@ media_library:
 collections:
   - name: "propiedades"
     label: "Propiedades"
-    folder: "src/content/propiedades" # Aquí le decimos dónde guardar los archivos
-    create: true # Permite crear nuevas propiedades
-    slug: "{{slug}}" # El nombre del archivo se generará automáticamente usando el título
+    folder: "src/content/propiedades"
+    create: true
+    identifier_field: titulo    # <--- ESTA ES LA LÍNEA NUEVA
+    slug: "{{titulo}}"          # <--- CAMBIAMOS ESTO PARA QUE OBLIGUE A USAR EL TÍTULO
     fields:
-      # Campos obligatorios
       - {label: "Título", name: "titulo", widget: "string"}
       - {label: "Imagen Destacada", name: "imagen_destacada", widget: "image"}
       - {label: "Dirección", name: "direccion", widget: "string"}
