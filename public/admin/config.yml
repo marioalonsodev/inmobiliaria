@@ -1,5 +1,6 @@
 backend:
   name: git-gateway
+  branch: main 
 
 # Esta línea es CLAVE hoy: nos permite probar el CMS en nuestra computadora sin conectarlo a internet todavía
 # local_backend: true

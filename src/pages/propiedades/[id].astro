@@ -106,7 +106,7 @@ const { Content } = await render(propiedad);
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Galería</h2>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {propiedad.data.galeria.map((foto) => (
-                <img src={foto} alt="Foto de la propiedad" class="w-full h-40 object-cover rounded-xl shadow-sm hover:opacity-90 transition-opacity cursor-pointer" />
+                <img src={foto.imagen} alt="Foto de la propiedad" class="w-full h-40 object-cover rounded-xl shadow-sm hover:opacity-90 transition-opacity cursor-pointer" />
               ))}
             </div>
           </div>

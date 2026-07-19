@@ -15,7 +15,7 @@ const propiedadesCollection = defineCollection({
     tipo_propiedad: z.enum(['Casa', 'Departamento', 'Duplex', 'PH', 'Local comercial', 'Cochera', 'Terreno', 'Galpón', 'Campo']),
     precio: z.number(),
 
-    galeria: z.array(z.string()).optional(),
+    galeria: z.array(z.object({ imagen: z.string() })).optional(),
     dormitorios: z.number().optional(),
     banos: z.number().optional(),
     ambientes: z.number().optional(),
